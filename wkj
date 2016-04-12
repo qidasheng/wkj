@@ -5,24 +5,38 @@ mkdir('app/controller', 0700);
 mkdir('app/controller/test', 0700);
 mkdir('app/model', 0700);
 mkdir('app/data', 0700);
-$controller_base = <<< EOF
+//$controller_base = <<< EOF
+//<?php
+//class controller_base {
+//        public function run() {
+//                echo "@".date('Y-m-d H:i:s')."\n";
+//        }
+//}
+//EOF;
+//file_put_contents('app/controller/base.php', $controller_base);
+//
+//$controller_test = '
+//<?php
+//class controller_test_a extends controller_base {
+//
+//        public function index() {
+//                $this->run();
+//        }
+//}
+//';
+//file_put_contents('app/controller/test/a.php', $controller_test);
+
+$index = <<< EOF
 <?php
-class controller_base {
-        public function run() {
-                echo "@".date('Y-m-d H:i:s')."\n";
-        }
-}
+define('ROOT',  str_replace("\\\\", '/',dirname(__FILE__)));
+require ROOT.'/vendor/autoload.php';
+\$sys = new Sys();
+\$sys->run();
 EOF;
-file_put_contents('app/controller/base.php', $controller_base);
-
-$controller_test = '
-<?php
-class controller_test_a extends controller_base {
-
-        public function index() {
-                $this->run();
-        }
+if (!file_exists('index.php')) {
+	file_put_contents('index.php', $index);
 }
-';
-file_put_contents('app/controller/test/a.php', $controller_test);
 
+$root = 'vendor/qsf/wkj/src/';
+copy($root."app/controller/test/a.php", "app/controller/test/a.php");
+copy($root."app/controller/base.php", "app/controller/base.php");
