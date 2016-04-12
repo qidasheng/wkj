@@ -6,9 +6,8 @@
             "email": "qidasheng@test.com"
         }
     ],
-    "minimum-stability": "dev",
     "require": {
-
+        
     },
     "autoload": {
         "psr-0": {
