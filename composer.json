@@ -2,13 +2,13 @@
     "name": "qsf/wkj",
     "authors": [
         {
-            "name": "shegnfu",
-            "email": "shengfu@test.com"
+            "name": "qidasheng",
+            "email": "qidasheng@test.com"
         }
     ],
     "minimum-stability": "dev",
     "require": {
-	"php": ">=5.4.0"
+
     },
     "autoload": {
         "psr-0": {
