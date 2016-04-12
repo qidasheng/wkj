@@ -1,5 +1,5 @@
 <?php
-class controller_test_a extends controller_base {
+class TestAController extends BaseController {
 
 	public function index() {
 		$this->run();
