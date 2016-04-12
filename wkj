@@ -1,0 +1,16 @@
+#!/usr/bin/env php
+<?php
+mkdir('app', 0700);
+mkdir('app/controller', 0700);
+mkdir('app/model', 0700);
+mkdir('app/data', 0700);
+$controller_base = <<< END
+<?php
+class controller_base {
+        public function run() {
+                echo "@".date('Y-m-d H:i:s')."\n";
+        }
+}
+END;
+file_put_contents('app/controller/base.php', $controller_base);
+
