@@ -4,7 +4,7 @@ mkdir('app', 0755);
 mkdir('app/Controllers', 0755);
 mkdir('app/Controllers/Test', 0755);
 mkdir('app/Model', 0755);
-mkdir('app/Data', 0755;
+mkdir('app/Data', 0755);
 //$controller_base = <<< EOF
 //<?php
 //class controller_base {
