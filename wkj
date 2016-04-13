@@ -38,5 +38,5 @@ if (!file_exists('index.php')) {
 }
 
 $root = 'vendor/qsf/wkj/src/';
-copy($root."app/Controllers/Test/A.php", "app/Controllers/Test/a.php");
+copy($root."app/Controllers/Test/A.php", "app/Controllers/Test/A.php");
 copy($root."app/Controllers/Base.php", "app/Controllers/Base.php");
