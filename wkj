@@ -1,10 +1,10 @@
 #!/usr/bin/env php
 <?php
-mkdir('app', 0700);
-mkdir('app/controller', 0700);
-mkdir('app/controller/Test', 0700);
-mkdir('app/model', 0700);
-mkdir('app/data', 0700);
+mkdir('app', 0755);
+mkdir('app/Controllers', 0755);
+mkdir('app/Controllers/Test', 0755);
+mkdir('app/Model', 0755);
+mkdir('app/Data', 0755;
 //$controller_base = <<< EOF
 //<?php
 //class controller_base {
@@ -31,12 +31,12 @@ $index = <<< EOF
 define('ROOT',  str_replace("\\\\", '/',dirname(__FILE__)));
 require ROOT.'/vendor/autoload.php';
 \$sys = new Sys();
-\$sys->run();
+\$sys->run(array('controllerPath' => ROOT.'/app/Controllers'));
 EOF;
 if (!file_exists('index.php')) {
 	file_put_contents('index.php', $index);
 }
 
 $root = 'vendor/qsf/wkj/src/';
-copy($root."app/controller/Test/A.php", "app/controller/Test/a.php");
-copy($root."app/controller/Base.php", "app/controller/Base.php");
+copy($root."app/Controllers/Test/A.php", "app/Controllers/Test/a.php");
+copy($root."app/Controllers/Base.php", "app/Controllers/Base.php");
