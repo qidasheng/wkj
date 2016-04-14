@@ -12,8 +12,9 @@
     "minimum-stability": "dev",
     "autoload": {
         "psr-0": {
-            "Wkj\\": "src/"
-        },
-        "files":["src/Sys/Core.php"]
+            "Wkj\\"          : "src/"
+            "Sys\\Http\\"    : "src/",
+            "Sys\\Routing\\" : "src/"
+        }
     }
 }
