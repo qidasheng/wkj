@@ -1,0 +1,32 @@
+{
+    "require": {
+    	"qsf/wkj":"*@dev"
+    },
+    "config" : {  
+    },
+    "autoload": {
+	"psr-0": {
+            "Model_": "app/",
+            "Data_": "app/",
+            "Test\\Hello\\": "app/Lib/Test/Hello"
+        },
+	"psr-4" : {
+        },
+    	"classmap": [
+    		"app/Lib",
+	],
+	"files":["app/Controllers/Base.php"]
+    },
+    "repositories": [
+        {
+            "type": "git",
+            "url": "https://github.com/qidasheng/wkj.git"
+        }
+    ],
+    "scripts": {
+        "post-update-cmd": "php vendor/qsf/wkj/wkj update",
+        "post-install-cmd": [
+            "php vendor/qsf/wkj/wkj install"
+        ]
+    } 
+}
