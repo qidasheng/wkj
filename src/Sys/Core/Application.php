@@ -18,6 +18,9 @@ class Application {
 	return forward_static_call(array('\Sys\Http\Request', 'createRequest'));
     }   
 
+    public function getRequest() {
+            return $this->request;
+    }
 
     public function setControllerDir($dir) {
         $this->controllerDir = $dir;
@@ -47,8 +50,8 @@ class Application {
         include_once($controllerFile);
         $controllerClass = new \ReflectionClass($controllerName);
         $controllerObj = $controllerClass->newInstance();
-        $controllerClass->getMethod('run')->invoke($controllerObj);
-	return true;
+        //$controllerClass->getMethod('run')->invoke($controllerObj);
+        $controllerObj->setApp($this)->run();
     }
 
     public function run($env) {
