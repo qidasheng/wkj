@@ -22,7 +22,7 @@ class Application {
             return $this->request;
     }
 
-    public function setControllerDir($dir) {
+    private function setControllerDir($dir) {
         $this->controllerDir = $dir;
     }
 
@@ -34,14 +34,14 @@ class Application {
 	return $this;
     }
 
-    public function route() {
+    private function route() {
 	$route = new \Sys\Routing\Route($this->request);
 	$ruleConfig = isset($this->appConfig['routeRule']) ? $this->appConfig['routeRule'] : array();
 	$this->routeInfo = $route->setRule($ruleConfig)->getRouteInfo();
 	return $this;
     }
 
-    public function dispatch() {
+    private function dispatch() {
         list($controllerName, $controllerFile) = $this->routeInfo;
 	$controllerFile = $this->controllerDir.DIRECTORY_SEPARATOR.$controllerFile; 
 	if (!file_exists($controllerFile)) {
