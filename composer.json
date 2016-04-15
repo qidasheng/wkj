@@ -12,7 +12,7 @@
     "minimum-stability": "dev",
     "autoload": {
         "psr-0": {
-            "Wkj\\"          : "src/"
+            "Wkj\\"          : "src/",
             "Sys\\Http\\"    : "src/",
             "Sys\\Routing\\" : "src/"
         }

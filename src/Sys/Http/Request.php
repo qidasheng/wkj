@@ -6,17 +6,14 @@ class Request {
 	}
 
 	public function getUri() {
-		
 		return $this->server('REQUEST_URI');
 	}
 
 	public function getPath() {
-		
 		return $this->server('PATH_INFO');
+	
 	}
-
 	public function getQuerySring() {
-		
 		return $this->server('QUERY_STRING');
 	}
 
@@ -29,7 +26,7 @@ class Request {
 		return $this->server('REMOTE_ADDR');
 	}
 
-	public function env($name, $key = '', $default = NULL) {
+	public function getEnv($name, $key = '', $default = NULL) {
 		$data = array();
 		switch ($name) {
 		    case 'GET':
@@ -51,28 +48,51 @@ class Request {
 		return empty($key) ? $data : (isset($data[$key]) ? $data[$key] : $default);
 	
 	}
+	public function setEnv($name, $key, $val = '') {
+                $data = array();
+                switch ($name) {
+                    case 'GET':
+                        $_GET[$key] = $val;
+                        break;
+                    case 'POST':
+                        $_POST[$key] = $val;
+                        break;
+                    case 'SERVER':
+                        $_SERVER[$key] = $val;
+                        break;
+                    case 'COOKIE':
+                        $_COOKIE[$key] = $val;
+                        break;
+                    case 'SESSION':
+                        $_SESSION[$key] = $val;
+                        break;
+                }
+                return true;		
+	}
+
+
 	public function query($key = '', $default = NULL) {
-		return $this->env('GET', $key, $default);
+		return $this->getEnv('GET', $key, $default);
 
 	}
 	public function form($key = '', $default = NULL) {
-		return $this->env('POST', $key, $default);
+		return $this->getEnv('POST', $key, $default);
 
 	}
 	public function server($key = '', $default = NULL) {
-		return $this->env('SERVER', $key, $default);
+		return $this->getEnv('SERVER', $key, $default);
 
 	}
 	public function cookie($key = '', $default = NULL) {
-		return $this->env('COOKIE', $key, $default);
+		return $this->getEnv('COOKIE', $key, $default);
 
 	}
 	public function session($key = '', $default = NULL) {
-		return $this->env('SESSION', $key, $default);
+		return $this->getEnv('SESSION', $key, $default);
 
 	}
 	public function all() {
-		return array_merge($this->env('GET'), $this->env('POST'));
+		return array_merge($this->getEnv('GET'), $this->getEnv('POST'));
 	}
 
 

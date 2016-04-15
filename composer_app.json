@@ -13,7 +13,8 @@
 	"psr-4" : {
         },
     	"classmap": [
-    		"app/Lib",
+    		"app/Data",
+    		"app/Lib"
 	],
 	"files":["app/Controllers/Base.php"]
     },

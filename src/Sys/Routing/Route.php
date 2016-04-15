@@ -25,11 +25,52 @@ class Route {
 	}
 	
 	public function isCli() {
-
+		return isset($_SERVER['SHELL']) || (PHP_SAPI === 'cli') ? TRUE : FALSE;
 	}
 
+        private function parseCliParams() {
+		$cliParams = $this->request->server('argv');
+		unset($cliParams[0]);
+		if (empty($cliParams)) {
+			return false;
+		}
+		foreach($cliParams as $param) {
+		        $paramArr = explode('=', $param, 2);
+		        $envName   = $paramArr[0];
+		        $envValArr = explode('&', $paramArr[1]);
+		        if (in_array($paramArr[0], array("GET", "POST"))) {
+		            if (!empty($envValArr)) {
+		                foreach($envValArr as $keyVal) {
+		                     $keyValArr = explode('=', $keyVal);
+		                     $paramArr[2][$keyValArr[0]] = $keyValArr[1];
+		                }
+		            }   
+		        } elseif (in_array($paramArr[0], array("URI", "SERVER"))) {
+		           if(is_file($paramArr[1])) {
+		                $paramArr[2] = parse_ini_file($paramArr[1]);
+		           }
+		           if($paramArr[0] == "URI") {
+				$paramArr[0] = 'SERVER';
+				$paramArr[2]['PATH_INFO'] = $paramArr[1];
+			   }
+		        }
+			if (!empty($paramArr[2])) {
+				foreach($paramArr[2] as $key => $val) {
+					$this->request->setEnv($paramArr[0], $key, $val);
+				}
+			}
+		}
+	}
+
+	public function beforeParseUri() {
+		if ($this->isCli()) {
+			$this->parseCliParams();
+		}
+		return true;
+	}
 	
 	public function parseUri() {
+	    $this->beforeParseUri();
 	    $pathInfo = $this->getPath();
 	    if (!empty($this->ruleConfig)) {
 		//@todo 特殊路由支持
@@ -38,6 +79,7 @@ class Route {
 	    }
 	    return $this;
 	}
+
 	
 	public function getRouteInfo() {
 	    $this->parseUri();
