@@ -91,8 +91,9 @@ class Request {
 		return $this->getEnv('SESSION', $key, $default);
 
 	}
-	public function all() {
-		return array_merge($this->getEnv('GET'), $this->getEnv('POST'));
+	public function all($key = '', $default = NULL) {
+		$data = array_merge($this->getEnv('GET'), $this->getEnv('POST'));
+		return empty($key) ? $data : (isset($data[$key]) ? $data[$key] : $default);
 	}
 
 

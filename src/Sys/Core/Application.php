@@ -51,7 +51,7 @@ class Application {
         $controllerClass = new \ReflectionClass($controllerName);
         $controllerObj = $controllerClass->newInstance();
         //$controllerClass->getMethod('run')->invoke($controllerObj);
-        $controllerObj->setApp($this)->run();
+        $controllerObj->setApp($this)->_run();
     }
 
     public function run($env) {
