@@ -1,6 +1,7 @@
 <?php namespace Sys\Db;
 
-class MysqlDb implements DbInterface {
+class MysqlDb implements DbInterface
+{
 
     protected $dbPoolConfig = array();
     protected $dbPool = array();
@@ -10,44 +11,53 @@ class MysqlDb implements DbInterface {
 
     public function __construct($dbPoolConfig = array())
     {
-        $this->dbPoolConfig = $dbPoolConfig;
-	$this->init();
+        $this->dbPoolConfig = !empty($dbPoolConfig) ? $dbPoolConfig : \Registry::get('app')->getConf('db');
+        $this->init();
     }
 
-    public function init() {
+    public function init()
+    {
         $configs = $this->dbPoolConfig;
-	foreach ($configs as $type => $aliases){
-		$class = "\\Sys\Db\\".$type;
-		foreach ($aliases as $alias => $config){
-			$this->dbPool[$alias] = new $class();
-			$this->dbPool[$alias]->configure($alias, $config);
-    		}
-	}
-	return true;	
+        if (empty($configs)) {
+            return array();
+        }
+        foreach ($configs as $type => $aliases) {
+            $class = "\\Sys\Db\\" . $type;
+            foreach ($aliases as $alias => $config) {
+                $this->dbPool[$alias] = new $class();
+                $this->dbPool[$alias]->configure($alias, $config);
+            }
+        }
+        return true;
     }
 
-    public function connect($dbAlias = '', $tableName = '') {
+    public function connect($dbAlias = '', $tableName = '')
+    {
         if (!empty($dbAlias)) {
-                $this->dbAlias = $dbAlias;
+            $this->dbAlias = $dbAlias;
         }
         if (!empty($tableName)) {
-                $this->tableName = $tableName;
-    	}
-	if (empty($this->dbPool)) {
-		$this->init();
-	}
+            $this->tableName = $tableName;
+        }
+        if (empty($this->dbPool)) {
+            $this->init();
+        }
         try {
             $this->db = $this->dbPool[$this->dbAlias];
         } catch (Exception $e) {
             return false;
         }
-	return $this;
+        return $this;
     }
 
 
-    public function db() {
+    public function db()
+    {
         if (!is_object($this->db)) {
             $this->connect();
+        }
+        if (!is_object($this->db)) {
+            throw new \Exception('Connect db failed!');
         }
         return $this->db;
     }
@@ -56,7 +66,8 @@ class MysqlDb implements DbInterface {
      * 强制操作主
      * @return $this
      */
-    public function master() {
+    public function master()
+    {
         $this->db()->set_write();
         return $this;
     }
@@ -65,7 +76,8 @@ class MysqlDb implements DbInterface {
      *强制操作从库
      * @return $this
      */
-    public function slave() {
+    public function slave()
+    {
         $this->db()->set_read();
         return $this;
     }
@@ -73,12 +85,13 @@ class MysqlDb implements DbInterface {
     /**
      * 查询单条记录
      *
-     * @param string $sql	sql语句。只能为select语句
+     * @param string $sql sql语句。只能为select语句
      * @param array $data
-     * @param bool $fetch_index  结果集是否使用下标数字方式
+     * @param bool $fetch_index 结果集是否使用下标数字方式
      * @return array
      */
-    public function findOne($sql, array $data = array(), $fetch_index = false){
+    public function findOne($sql, array $data = array(), $fetch_index = false)
+    {
         $data = $this->db()->fetch_all($sql, $data, $fetch_index);
         if (is_array($data) && isset($data[0])) {
             return $data[0];
@@ -89,12 +102,13 @@ class MysqlDb implements DbInterface {
     /**
      * 查询多条单条记录
      *
-     * @param string $sql	sql语句。只能为select语句
+     * @param string $sql sql语句。只能为select语句
      * @param array $data
-     * @param bool $fetch_index  结果集是否使用下标数字方式
+     * @param bool $fetch_index 结果集是否使用下标数字方式
      * @return array
      */
-    public function findAll($sql, array $data = array(), $fetch_index = false){
+    public function findAll($sql, array $data = array(), $fetch_index = false)
+    {
         $data = $this->db()->fetch_all($sql, $data, $fetch_index);
         return $data;
     }
@@ -103,11 +117,12 @@ class MysqlDb implements DbInterface {
     /**
      * 插入数据，支持批量插入
      * @param array $data
-     * @param bool  $ignore 是否使用INSERT IGNORE语法
+     * @param bool $ignore 是否使用INSERT IGNORE语法
      * @return int   //单条插入返回last insert id，批量插入返回插入记录数
      */
-    public function add($data, $ignore = false) {
-        if(empty($data) || !is_array($data)) {
+    public function add($data, $ignore = false)
+    {
+        if (empty($data) || !is_array($data)) {
             return false;
         }
 
@@ -119,7 +134,7 @@ class MysqlDb implements DbInterface {
             $is_batch = false;
         }
 
-        if(empty($data[0]) || !is_array($data[0])) {
+        if (empty($data[0]) || !is_array($data[0])) {
             return false;
         }
         $ret = false;
@@ -127,7 +142,7 @@ class MysqlDb implements DbInterface {
         $ignore_str = $ignore ? 'IGNORE' : '';
 
         $keys = array_keys($data[0]);
-        $sql = 'INSERT '.$ignore_str.' INTO ' . $this->tableName. '(' . implode(",", $keys) . ') VALUES ';
+        $sql = 'INSERT ' . $ignore_str . ' INTO ' . $this->tableName . '(' . implode(",", $keys) . ') VALUES ';
         $size = sizeof($keys);
         $params = array();
         for ($i = 0; $i < $size; $i++) {
@@ -155,12 +170,13 @@ class MysqlDb implements DbInterface {
      * 删除数据
      * @param $where
      */
-    public function del($where, $where_data = array()) {
+    public function del($where, $where_data = array())
+    {
         $ret = false;
         if (empty($where)) {
             return $ret;
         }
-        $sql = "DELETE FROM ".$this->tableName." WHERE ". $where;
+        $sql = "DELETE FROM " . $this->tableName . " WHERE " . $where;
         $ret = $this->db()->exec($sql, array_values($where_data));
 
         return $ret;
@@ -173,7 +189,8 @@ class MysqlDb implements DbInterface {
      * @param $where
      * @return bool
      */
-    public function update($data, $where, $where_data = array()) {
+    public function update($data, $where, $where_data = array())
+    {
         $ret = false;
         if (empty($data) || empty($where)) {
             return $ret;
@@ -187,7 +204,7 @@ class MysqlDb implements DbInterface {
             }
             $sets = rtrim($sets, ', ');
 
-            $sql = 'UPDATE ' . $this->tableName . ' SET ' . $sets . ' WHERE '. $where;
+            $sql = 'UPDATE ' . $this->tableName . ' SET ' . $sets . ' WHERE ' . $where;
             $ret = $this->db()->exec($sql, array_merge(array_values($data), array_values($where_data)));
         }
 
@@ -201,7 +218,8 @@ class MysqlDb implements DbInterface {
      * @param array $data
      * @return mixed
      */
-    public function exec($sql, array $data = array()) {
+    public function exec($sql, array $data = array())
+    {
         if (empty($data)) {
             $data = array();
         }

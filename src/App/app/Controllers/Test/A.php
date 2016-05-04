@@ -1,8 +1,11 @@
 <?php
-class TestAController extends BaseController {
 
-	public function run() {
-		echo 'Hello word!';
-	}
+class TestAController extends BaseController
+{
+
+    public function run()
+    {
+        echo 'Hello word!';
+    }
 }
 

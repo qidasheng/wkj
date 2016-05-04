@@ -7,12 +7,12 @@
     "autoload": {
 	"psr-0": {
             "Model_": "app/",
-            "Data_": "app/",
-            "Test\\Hello\\": "app/Lib/Test/Hello"
+            "Data_" : "app/",
         },
 	"psr-4" : {
-        },
-    	"classmap": [
+	    "Api\\"    : "app/Lib/Api"
+    },
+    "classmap": [
     		"app/Data",
     		"app/Lib"
 	],

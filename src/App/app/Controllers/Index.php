@@ -1,7 +1,10 @@
-<?php 
-class IndexController {
+<?php
 
-	public function run() {
-		date('Y-m-d H:i:s');
-	}
+class IndexController
+{
+
+    public function run()
+    {
+        date('Y-m-d H:i:s');
+    }
 }

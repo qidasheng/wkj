@@ -1,9 +1,11 @@
 <?php namespace Test\Hello;
 
-class World {
+class World
+{
 
-	public function a() {
-		echo 'test psr4';	
-	}
+    public function a()
+    {
+        echo 'test psr4';
+    }
 } 
 
